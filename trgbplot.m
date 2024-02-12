@@ -3,7 +3,16 @@ function trgbplot(data,varargin)
 %
 %  trgbtool(data) plots the graphics using the data structure.
 %  trgbtool(file) plots the graphics using the data stored into file.
-%  trgbtool(...,'galaxy','galaxy name') sets up galaxy name for plot.
+%  trgbtool(...,'galaxy','galaxy name') sets up the galaxy name for plot.
+%  trgbtool(...,'cmd.width',width) sets up the width of the CMD in the plot
+%  trgbtool(...,'cmd.colorlim',[lbnd,rbnd]) sets up the left (lbnd) and
+%    right (rbnd) color bounds of the CMD
+%  trgbtool(...,'cmd.maglim',[minmag,maxmag]) sets up the minimal (minmag)
+%    and maxaimal (maxmag) magnitudes of the CMD
+%  trgbtool(...,'fit.model','on') shows the "true" shape of the LF without
+%    taking into account observational effects.
+%  trgbtool(...,'fit.sobel','on') adds the sobel filter behaviour
+
 
 if ~isstruct(data) && exist(data)==2,  data=load(data); data=data.data; end;
 if isstruct(data) && ~isfield(data,'Result'),  error('Unknown type structure'); end;
