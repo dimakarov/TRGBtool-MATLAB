@@ -5,8 +5,8 @@ function trgbplot(data,varargin)
 %  trgbtool(file) plots the graphics using the data stored into file.
 %  trgbtool(...,'galaxy','galaxy name') sets up galaxy name for plot.
 
-if ~isstruct(data) & exist(data)==2,  data=load(data); data=data.data; end;
-if isstruct(data) & ~isfield(data,'Result'),  error('Unknown type structure'); end;
+if ~isstruct(data) && exist(data)==2,  data=load(data); data=data.data; end;
+if isstruct(data) && ~isfield(data,'Result'),  error('Unknown type structure'); end;
 if ~isstruct(data), error('Unsupported type'); end;
 
 vars = {'galaxy', 'cmd.width', 'cmd.colorlim', 'cmd.maglim', 'fit.model','fit.sobel'};
@@ -15,7 +15,7 @@ defs = {'', [], [], [], 'off','off'};
     getargs(vars,defs,varargin{:});
 error(err);
 
-if (length(data.Galaxy)>0 & strcmp(galaxy,'')), galaxy=upper(data.Galaxy); end;
+if (length(data.Galaxy)>0 && strcmp(galaxy,'')), galaxy=upper(data.Galaxy); end;
 PlotData(data,galaxy,cmd,fit);
 
 
@@ -99,12 +99,12 @@ p = data.Selected ;
 N=length(data.Y(p));
 %fit
 Xlf=linspace(min(data.Y(p)),max(data.Y(p)),100);
-Ylf=lf('obs',data.Result.Param,Xlf,data.data(2).fake) * N * Xstep;
+Ylf=lf('obs',data.Result.Param,Xlf,data.data(data.Yid).fake) * N * Xstep;
 %model
 if strcmpi(fit.model,'on')
     Ylf0 = lf('model',data.Result.Param,Xlf);
     Ti = diff(LFbounds);
-    Ci = diff( fnval( fnint( mkpp(data.data(2).fake.mag,data.data(2).fake.completeness) ), LFbounds ) );
+    Ci = diff( fnval( fnint( mkpp(data.data(data.Yid).fake.mag,data.data(data.Yid).fake.completeness) ), LFbounds ) );
     plot(Xlf,Ylf0 * Ti/Ci * N * Xstep,'--c','LineWidth',2);
 end;
 plot(Xlf,Ylf,'-r','LineWidth',2);
